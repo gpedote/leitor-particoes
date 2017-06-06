@@ -45,6 +45,12 @@ class Leitor(object):
 
     def __ler_particao_ordenada(self, arq_particao):
         p = np.genfromtxt(arq_particao, dtype=None, delimiter=self.separador)
+
+        # Se os dados forem homogêneos modifica o dtype para que a nomeação seja possível
+        if (p.dtype.names is None):
+            novo_dtype = map(lambda z : ('f{}'.format(z), p.dtype), range(0, p.shape[1]))
+            p.dtype = np.dtype(novo_dtype)
+
         p.dtype.names = ("id", "label")
         p.sort(order="id")
         return p
